@@ -1,0 +1,8 @@
+Current code status as of 7/9/17:
+
+testAHRS.py - ignoring the commented code, it currently works to send periodic commands in the agreed format (see electrical folder on drive for commands) to the arduino
+lineFollow.py - logic for taking points from image processing and determining which direction it needs to go to follow a line; doesn't implement input or output yet
+
+serial_comm.ino - works with testAHRS.py for NUC-arduino communication
+all_thrusters.ino - controls turns on all the thrusters
+everything.ino attempts to combine serial_comm and all_thrusters, but starts using incorrect logic when you use servo.attach(pinNum)
