@@ -1,0 +1,4 @@
+main power on
+nuc and arduino start executing
+switch to power thrusters on
+switch to start moving
