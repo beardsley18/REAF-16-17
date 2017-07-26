@@ -394,7 +394,7 @@ void loop() {
             Serial.println("Marble B already dropped"); //edit for specific command, add LED command
           break;
           }
-    }
+    }*/
     //} // end if (switchState == HIGH)
   } //end if (Serial.available() > 0)
 
