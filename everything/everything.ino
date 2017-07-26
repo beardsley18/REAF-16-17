@@ -103,17 +103,18 @@ void loop() {
   all functions must be inside loop for serial commands */
   if (Serial.available() > 0) {
     //assign what is in serial monitor as command
-    char inputBuffer[3];
-    int b = Serial.readBytes(inputBuffer, 3);
+    char inputBuffer[1];
+    int b = Serial.readBytes(inputBuffer, 1);
+    //int inputBuffer = Serial.read();
     //break down command into 4 parts, char 1, char 2, char 3, and speed 
     //currently not reading speed
-    /*test NUC communication
-    if (strcmp(inputBuffer, "FOR") == 1) {
-      Serial.write(inputBuffer, 3);
+    /*test NUC communication*/
+    if (inputBuffer[0] == 'a') {
+      Serial.write("Y");
     }
     else {
-      Serial.write("NOP");
-    }*/
+      Serial.write("N");
+    }
     /*if (switchState == LOW) {
       sda_speed = stop_moving;
       sdf_speed = stop_moving;
@@ -128,16 +129,7 @@ void loop() {
     //else {
       //cases for thrusters *NEEDS EDITING
       //general commands                                                                                                                                                                                                  c
-      if (strcmp(inputBuffer, "FOR\0") == 1) {
-        /*pm0.writeMicroseconds(forward_slow);
-        delay(1000);
-        pv0.writeMicroseconds(forward_slow);
-        delay(1000);
-        sm0.writeMicroseconds(forward_slow);
-        delay(1000);
-        sv0.writeMicroseconds(forward_slow);
-        delay(1000);
-        */
+      /*if (strcmp(inputBuffer, "FOR\0") == 1) {
         sda_speed = stop_moving;
         sdf_speed = stop_moving;
         sv0_speed = forward_slow;
@@ -150,14 +142,6 @@ void loop() {
         //Serial.write("Sub moving forward"); //edit for specific command, add LED command
       }
       else if (strcmp(inputBuffer, "BAC\0") == 1) {
-        /*pm0.writeMicroseconds(reverse_slow);
-        delay(1000);
-        pv0.writeMicroseconds(reverse_slow);
-        delay(1000);
-        sm0.writeMicroseconds(reverse_slow);
-        delay(1000);
-        sv0.writeMicroseconds(reverse_slow);
-        delay(1000);*/
         sda_speed = stop_moving;
         sdf_speed = stop_moving;
         sv0_speed = reverse_slow;
@@ -170,15 +154,6 @@ void loop() {
         //Serial.println("Sub moving backward"); //edit for specific command, add LED command
       }
       else if (strcmp(inputBuffer, "UP*\0") == 1) {
-        /*sdf.writeMicroseconds(forward_slow);
-        delay(1000);
-        sda.writeMicroseconds(forward_slow);
-        delay(1000);
-        pda.writeMicroseconds(forward_slow);
-        delay(1000);
-        pdf.writeMicroseconds(forward_slow);
-        delay(1000);
-        */
         sda_speed = forward_slow;
         sdf_speed = forward_slow;
         sv0_speed = stop_moving;
@@ -191,14 +166,6 @@ void loop() {
         //Serial.println("Sub moving up"); //edit for specific command, add LED command
       }
       else if (strcmp(inputBuffer, "DOW\0") == 1) {
-        /*sdf.writeMicroseconds(reverse_slow);
-        delay(1000);
-        sda.writeMicroseconds(reverse_slow);
-        delay(1000);
-        pda.writeMicroseconds(reverse_slow);
-        delay(1000);
-        pdf.writeMicroseconds(reverse_slow);
-        delay(1000);*/
         sda_speed = reverse_slow;
         sdf_speed = reverse_slow;
         sv0_speed = stop_moving;
@@ -211,10 +178,6 @@ void loop() {
         //Serial.println("Sub moving down"); //edit for specific command, add LED command
       }
       else if (strcmp(inputBuffer, "RIG\0") == 1) {
-        /*pm0.writeMicroseconds(forward_slow);
-        delay(1000);
-        pv0.writeMicroseconds(forward_slow);
-        delay(1000);*/
         sda_speed = stop_moving;
         sdf_speed = stop_moving;
         sv0_speed = stop_moving;
@@ -227,10 +190,6 @@ void loop() {
         //Serial.println("Sub moving right"); //edit for specific command, add LED command
       } 
       else if (strcmp(inputBuffer, "LEF\0") == 1) {
-        /*sm0.writeMicroseconds(forward_slow);
-        delay(1000);
-        sv0.writeMicroseconds(forward_slow);
-        delay(1000);*/
         sda_speed = stop_moving;
         sdf_speed = stop_moving;
         sv0_speed = forward_slow;
@@ -243,14 +202,6 @@ void loop() {
         //Serial.println("Sub moving left"); //edit for specific command, add LED command
       }
       else if (strcmp(inputBuffer, "HOV\0") == 1) {
-        /*sda.writeMicroseconds(forward_slow);
-        delay(1000);
-        sdf.writeMicroseconds(forward_slow);
-        delay(1000);
-        pda.writeMicroseconds(forward_slow);
-        delay(1000);
-        pdf.writeMicroseconds(forward_slow);
-        delay(1000);*/
         sda_speed = forward_slow;
         sdf_speed = forward_slow;
         sv0_speed = stop_moving;
@@ -372,7 +323,7 @@ void loop() {
       }
       else {
         Serial.write("NON");
-      }
+      }*/
        
       //indivudal commands 
       //switch case for mechanisms
