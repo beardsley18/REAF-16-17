@@ -1,7 +1,7 @@
 import time
 import serial
 
-ser = serial.Serial('COM3', 9600)
+ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
 time.sleep(2)
 
 try:
