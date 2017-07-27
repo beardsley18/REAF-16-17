@@ -38,7 +38,7 @@ volatile bool marbleb= false;*/
 int reverse_fast = 1200;
 int reverse_slow = 1400;
 int stop_moving = 1500;
-int forward_slow = 1600;
+int forward_slow = 1600; 
 int forward_fast = 1800;
 
 int sda_speed = stop_moving;
@@ -50,7 +50,7 @@ int pda_speed = stop_moving;
 int pm0_speed = stop_moving;
 int pv0_speed = stop_moving;
 
-int switchPin = 24;
+int switchPin = 22;
 int switchState = 0; // whether the switch is on or off
   
 //Setup, only runs at beginning and does not run again
@@ -83,7 +83,7 @@ void setup() {
   t2.attach(45);*/
 
   //set switch pin as input
-  //pinMode(switchPin, INPUT);
+  pinMode(switchPin, INPUT);
   
   //Thrusters have to initialized with 1500 microseconds and must include delay of 1000 ms for the ESC to recognize it
   sda.writeMicroseconds(sda_speed);
@@ -98,7 +98,7 @@ void setup() {
 }
 
 void loop() {
-  //switchState = digitalRead(switchPin);
+  switchState = digitalRead(switchPin);
   /*ACTUAL MOVEMENT AND MECHANISMS, EDIT AS NEEDED
   all functions must be inside loop for serial commands */
   if (Serial.available() > 0) {
@@ -115,7 +115,7 @@ void loop() {
     else {
       Serial.write("N");
     }*/
-    /*if (switchState == LOW) {
+    if (switchState == LOW) {
       sda_speed = stop_moving;
       sdf_speed = stop_moving;
       sv0_speed = stop_moving;
@@ -124,13 +124,18 @@ void loop() {
       pda_speed = stop_moving;
       pm0_speed = stop_moving;
       pv0_speed = stop_moving;
-      Serial.write("NON", 3);
-    }*/
-    //else {
+      Serial.write("Z");
+    }
+    else {
+
+      if (inputBuffer[0] == 'G') {
+        Serial.write("G");
+      }
+      
       //cases for thrusters *NEEDS EDITING
       //general commands 
       //Forward
-      if (inputBuffer[0] == 'F') {
+      else if (inputBuffer[0] == 'F') {
         sda_speed = stop_moving;
         sdf_speed = stop_moving;
         sv0_speed = forward_slow;
@@ -140,6 +145,18 @@ void loop() {
         pm0_speed = forward_slow;
         pv0_speed = forward_slow;
         Serial.write("F");
+        //Serial.write("Sub moving forward"); //edit for specific command, add LED command
+      }
+      else if (inputBuffer[0] == 'M') {
+        sda_speed = stop_moving;
+        sdf_speed = stop_moving;
+        sv0_speed = stop_moving;
+        sm0_speed = forward_slow;
+        pdf_speed = stop_moving;
+        pda_speed = stop_moving;
+        pm0_speed = forward_slow;
+        pv0_speed = stop_moving;
+        Serial.write("M");
         //Serial.write("Sub moving forward"); //edit for specific command, add LED command
       }
       //Back
@@ -179,6 +196,19 @@ void loop() {
         pm0_speed = stop_moving;
         pv0_speed = stop_moving;
         Serial.write("D");
+        //Serial.println("Sub moving down"); //edit for specific command, add LED command
+      }
+
+       else if (inputBuffer[0] == 'N') {
+        sda_speed = stop_moving;
+        sdf_speed = stop_moving;
+        sv0_speed = forward_slow;
+        sm0_speed = stop_moving;
+        pdf_speed = stop_moving;
+        pda_speed = stop_moving;
+        pm0_speed = stop_moving;
+        pv0_speed = forward_slow;
+        Serial.write("N");
         //Serial.println("Sub moving down"); //edit for specific command, add LED command
       }
       //Right
@@ -338,7 +368,7 @@ void loop() {
         //Serial.println("Sub stopped"); //edit for specific command, add LED command
       }
       else {
-        Serial.write("NON");
+        Serial.write("q");
       }
        
       //indivudal commands 
@@ -395,7 +425,7 @@ void loop() {
           break;
           }
     }*/
-    //} // end if (switchState == HIGH)
+    } // end if (switchState == HIGH)
   } //end if (Serial.available() > 0)
 
   sda.writeMicroseconds(sda_speed);
