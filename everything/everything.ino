@@ -36,9 +36,14 @@ volatile bool marbleb= false;*/
 /*Thruster speed values (edit once tested with sub)
 1100 is max reverse value, 1500 is stop, 1900 is max forward*/
 int reverse_fast = 1200;
+int reverse_medium = 1300;
 int reverse_slow = 1400;
+int reverse_slow_slow = 1450;
 int stop_moving = 1500;
+int forward_slow_slow = 1550;
 int forward_slow = 1600; 
+int forward_medium_slow = 1650;
+int forward_medium = 1700;
 int forward_fast = 1800;
 
 int sda_speed = stop_moving;
@@ -52,6 +57,8 @@ int pv0_speed = stop_moving;
 
 int switchPin = 22;
 int switchState = 0; // whether the switch is on or off
+
+
   
 //Setup, only runs at beginning and does not run again
 void setup() {
@@ -67,8 +74,8 @@ void setup() {
   sdf.attach(8);
   sv0.attach(7);
   sm0.attach(4);
-  pdf.attach(9);
-  pda.attach(3);
+  pdf.attach(3);
+  pda.attach(9);
   pm0.attach(11);
   pv0.attach(13);
 
@@ -134,30 +141,70 @@ void loop() {
       
       //cases for thrusters *NEEDS EDITING
       //general commands 
-      //Forward
+      //Forward with 4 side thrusters
       else if (inputBuffer[0] == 'F') {
         sda_speed = stop_moving;
+        sdf_speed = stop_moving;
+        sv0_speed = forward_medium_slow;
+        sm0_speed = forward_medium_slow;
+        pdf_speed = forward_slow_slow;
+        pda_speed = stop_moving;
+        pm0_speed = forward_medium_slow;
+        pv0_speed = forward_medium_slow;
+        Serial.write("F");
+        //Serial.write("Sub moving forward"); //edit for specific command, add LED command
+      }
+      //Forward with back two thrusters on
+      else if (inputBuffer[0] == 'M') {
+        sda_speed = reverse_slow_slow;
         sdf_speed = stop_moving;
         sv0_speed = forward_slow;
         sm0_speed = forward_slow;
         pdf_speed = stop_moving;
-        pda_speed = stop_moving;
+        pda_speed = reverse_slow_slow;
         pm0_speed = forward_slow;
         pv0_speed = forward_slow;
-        Serial.write("F");
+        Serial.write("M");
         //Serial.write("Sub moving forward"); //edit for specific command, add LED command
       }
-      else if (inputBuffer[0] == 'M') {
+      //Forward with 2 side thrusters only going faster
+      else if (inputBuffer[0] == 'N') {
         sda_speed = stop_moving;
         sdf_speed = stop_moving;
-        sv0_speed = stop_moving;
-        sm0_speed = forward_slow;
+        sv0_speed = forward_medium_slow;
+        sm0_speed = stop_moving;
+        pdf_speed = stop_moving;
+        pda_speed = stop_moving;
+        pm0_speed = stop_moving;
+        pv0_speed = forward_medium_slow;
+        Serial.write("N");
+        //Serial.println("Sub moving down"); //edit for specific command, add LED command
+      }
+      //Forward with 4 side thrusters but left ones go slower
+      else if (inputBuffer[0] == 'O') {
+        sda_speed = stop_moving;
+        sdf_speed = stop_moving;
+        sv0_speed = forward_medium_slow;
+        sm0_speed = forward_medium_slow;
         pdf_speed = stop_moving;
         pda_speed = stop_moving;
         pm0_speed = forward_slow;
-        pv0_speed = stop_moving;
-        Serial.write("M");
-        //Serial.write("Sub moving forward"); //edit for specific command, add LED command
+        pv0_speed = forward_slow;
+        Serial.write("O");
+        //Serial.println("Sub moving down"); //edit for specific command, add LED command
+      }
+      //Forward with 2 side thrusters but left one goes slower
+      else if (inputBuffer[0] == 'P') {
+        sda_speed = stop_moving;
+        sdf_speed = stop_moving;
+        sv0_speed = forward_medium_slow;
+        sm0_speed = stop_moving;
+        pdf_speed = stop_moving;
+        pda_speed = stop_moving;
+        pm0_speed = stop_moving;
+        pv0_speed = forward_slow;
+        Serial.write("P");
+        //Serial.println("Sub moving down"); //edit for specific command, add LED command
       }
       //Back
       else if (inputBuffer[0] == 'B') {
@@ -187,28 +234,15 @@ void loop() {
       }
       //Down
       else if (inputBuffer[0] == 'D') {
-        sda_speed = reverse_slow;
-        sdf_speed = reverse_slow;
+        sda_speed = reverse_medium;
+        sdf_speed = stop_moving;
         sv0_speed = stop_moving;
         sm0_speed = stop_moving;
-        pdf_speed = reverse_slow;
-        pda_speed = reverse_slow;
+        pdf_speed = stop_moving;
+        pda_speed = forward_medium;
         pm0_speed = stop_moving;
         pv0_speed = stop_moving;
         Serial.write("D");
-        //Serial.println("Sub moving down"); //edit for specific command, add LED command
-      }
-
-       else if (inputBuffer[0] == 'N') {
-        sda_speed = stop_moving;
-        sdf_speed = stop_moving;
-        sv0_speed = forward_slow;
-        sm0_speed = stop_moving;
-        pdf_speed = stop_moving;
-        pda_speed = stop_moving;
-        pm0_speed = stop_moving;
-        pv0_speed = forward_slow;
-        Serial.write("N");
         //Serial.println("Sub moving down"); //edit for specific command, add LED command
       }
       //Right
@@ -302,7 +336,7 @@ void loop() {
         Serial.write("b");
         //Serial.println("Sub hovering"); //edit for specific command, add LED command
       }
-      //PDF - 9
+      //PDF - 3
       else if (inputBuffer[0] == 'f') {
         sda_speed = stop_moving;
         sdf_speed = stop_moving;
@@ -315,7 +349,7 @@ void loop() {
         Serial.write("f");
         //Serial.println("Sub hovering"); //edit for specific command, add LED command
       }
-      //PDA - 3
+      //PDA - 9
       else if (inputBuffer[0] == 'a') {
         sda_speed = stop_moving;
         sdf_speed = stop_moving;

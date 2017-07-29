@@ -18,12 +18,12 @@ try:
         abc = ser.read(1).decode('utf-8')
         
 
-    ser.write('U'.encode('utf-8'))  #change thruster each time
+    ser.write('D'.encode('utf-8'))  #change thruster each time
     ser.flush()
     # print('test')
     abc = ser.read(1).decode('utf-8')
     print(abc)
-    time.sleep(10)
+    time.sleep(2)
     ser.flush()
         
     ser.write('S'.encode('utf-8'))  #change thruster each time
